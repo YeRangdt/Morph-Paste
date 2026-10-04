@@ -1,0 +1,13 @@
+train: C:/Users/91819/Desktop/da/NEU-DET/train_cp_poisson_dpsa_aspect_2_0x/images
+val: C:/Users/91819/Desktop/da/NEU-DET/val/images
+test: C:/Users/91819/Desktop/da/NEU-DET/test/images
+
+nc: 6
+
+names:
+  - crazing
+  - inclusion
+  - patches
+  - pitted_surface
+  - rolled-in_scale
+  - scratches

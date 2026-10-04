@@ -1,0 +1,7 @@
+numpy==2.2.6
+opencv-python==4.13.0.92
+scikit-image==0.26.0
+torch==2.7.1
+torchvision
+ultralytics==8.4.47
+PyYAML
