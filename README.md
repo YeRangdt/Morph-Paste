@@ -24,17 +24,13 @@ The augmentation procedure does not require pixel-level segmentation masks and d
 Morph-Paste/
 ├── morph_paste.py                 # Main Morph-Paste implementation
 ├── train_multiseed.py             # YOLOv8 training and evaluation
+├── data.yaml                      # Example Ultralytics dataset configuration
 ├── requirements.txt               # Python dependencies
-├── README.md                      # Project documentation
-├── ablation_c_histogram.py        # Histogram-matching ablation
-├── ablation_d_adaptive_alpha.py   # Adaptive-mask and alpha-blending ablation
-├── stable mask possion.py         # Fixed elliptical-mask Poisson comparison
-├── alpha_blending.py              # Gaussian alpha-blending comparison
-├── mixup_2_0x.py                  # MixUp comparison
-└── Copy paste improved.py         # Scale and placement constrained copy-paste
+└── README.md                      # Project documentation
 ```
 
-The ablation and comparison scripts are optional and are included to support the experiments reported in the manuscript.
+The repository contains the main augmentation pipeline and the multiseed detector
+training and evaluation script used for the principal experiments.
 
 ## Installation
 
@@ -95,11 +91,16 @@ The four bounding-box coordinates must be normalized to the range from 0 to 1.
 
 ## Running Morph-Paste
 
-Before running the augmentation script, open `morph_paste.py` and set the dataset path:
+By default, the repository and dataset should be placed next to each other:
 
-```python
-DATA_ROOT = r"path/to/NEU-DET"
+```text
+parent-directory/
+├── Morph-Paste/
+└── NEU-DET/
 ```
+
+If the dataset is stored elsewhere, update `DATA_ROOT` near the top of
+`morph_paste.py` and the `path` entry in `data.yaml`.
 
 The default augmentation settings are:
 
@@ -127,12 +128,17 @@ NEU-DET/train_cp_poisson_v2_2_0x/
 
 ## Training and Evaluation
 
-Open `train_multiseed.py` and configure the following paths:
+The included `data.yaml` assumes that `NEU-DET` is next to this repository and
+that the augmented training set was generated using the default output name.
+Update its `path` entry if necessary.
+
+The training script uses the repository-local `data.yaml` file and allows
+Ultralytics to obtain the standard `yolov8n.pt` checkpoint:
 
 ```python
-ROOT = Path(r"path/to/project")
-DATA = ROOT / "data_ours_poisson.yaml"
-MODEL = ROOT / "yolov8n.pt"
+ROOT = Path(__file__).resolve().parent
+DATA = ROOT / "data.yaml"
+MODEL = "yolov8n.pt"
 ```
 
 To reproduce the three-seed experiment, use:
@@ -176,5 +182,5 @@ On GC10-DET, mAP@0.5 increased from `65.3%` to `66.7%`, and precision increased 
 - Dataset images and model weights are not included in this repository.
 - The augmentation code expects YOLO-format bounding-box annotations.
 - Random seeds should be fixed for reproducible data generation and detector training.
-- Paths in the scripts must be updated according to the local directory structure.
+- The default paths assume that the repository and `NEU-DET` are sibling directories.
 - The code is provided to support verification and reproduction of the manuscript results.
